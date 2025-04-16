@@ -1,6 +1,5 @@
 # LST Downscaling Project
 ![images](images/results_spatial.png)
-https://github.com/wqlin08/LST-Downscaling-Project/blob/main/images/results_spatial.png
 
 This project implements a Land Surface Temperature (LST) downscaling pipeline using Landsat and Sentinel-2 satellite imagery. The workflow processes geospatial data, calculates spectral indices, trains machine learning models to downscale LST, and visualizes the results.
 
