@@ -7,7 +7,7 @@ This project implements a Land Surface Temperature (LST) downscaling pipeline us
 
 The project consists of three main Python scripts:
 
-1. **preprocessing.py**: Handles data preprocessing, including clipping rasters with shapefiles, calibrating satellite imagery, and calculating spectral indices (NDVI, MNDWI, NDBI).
+1. **preprocessing.py**: Handles data preprocessing, including clipping rasters with shapefiles, calibrating satellite imagery, and calculating spectral indices (NDVI, MNDWI, NDBI, ASVI).
 2. **lst_downscaling.py**: Implements LST downscaling using Linear Regression and Random Forest models, trained on Landsat data and applied to Sentinel-2 data.
 3. **visualization.py**: Generates visualizations of the spectral indices and downscaled LST results using matplotlib.
 
@@ -50,7 +50,7 @@ LST_downscaling/
    ```bash
    python lst_downscaling.py
    ```
-   This saves trained models (`lr_model.pkl`, `rf_model.pkl`) in `data/models/` and downscaled LST rasters (`sentinel_lst_lr.tif`, `sentinel_lst_rf.tif`) in `data/processed/`.
+   This saves trained models in `data/models/` and downscaled LST rasters (`sentinel_lst_lr.tif`, `sentinel_lst_rf.tif`) in `data/processed/`.
 
 3. **Visualization**:
    Run `visualization.py` to generate a spatial distribution map of indices and LST results:
@@ -89,9 +89,7 @@ LST_downscaling/
   - `sentinel_ndvi.tif`, `sentinel_mndwi.tif`, `sentinel_ndbi.tif`: Sentinel-2 spectral indices
   - `sentinel_lst_lr.tif`, `sentinel_lst_rf.tif`: Downscaled Sentinel-2 LST (Linear Regression and Random Forest)
 
-- **Models** (`data/models/`):
-  - `lr_model.pkl`: Trained Linear Regression model
-  - `rf_model.pkl`: Trained Random Forest model
+- **Models** (`data/models/`)
 
 - **Visualization** (`data/`):
   - `results_spatial.png`: Spatial distribution map of indices and LST
