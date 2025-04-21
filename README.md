@@ -8,7 +8,7 @@ This project implements a Land Surface Temperature (LST) downscaling pipeline us
 The project consists of three main Python scripts:
 
 1. **preprocessing.py**: Handles data preprocessing, including clipping rasters with shapefiles, calibrating satellite imagery, and calculating spectral indices (NDVI, MNDWI, NDBI, ASVI).
-2. **lst_downscaling.py**: Implements LST downscaling using Linear Regression and Random Forest models, trained on Landsat data and applied to Sentinel-2 data.
+2. **lst_downscaling.py**: Implements LST downscaling using Linear Regression, Random Forest models and XGBoost models, trained on Landsat data and applied to Sentinel-2 data.
 3. **visualization.py**: Generates visualizations of the spectral indices and downscaled LST results using matplotlib.
 
 ## Prerequisites
