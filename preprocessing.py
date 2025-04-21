@@ -164,13 +164,11 @@ class DataPreprocessor:
         )
         
     def _calculate_and_save_indices(self, red, nir, swir1, green, meta, transform, sensor_name):
-
         epsilon = 1e-10
         
         if not (red.shape == nir.shape == swir1.shape == green.shape):
             raise ValueError(f"Inconsistent band shapes: red={red.shape}, nir={nir.shape}, swir1={swir1.shape}, green={green.shape}")
         
-
         print(f"\n{sensor_name} Band:")
         for name, band in [("Red", red), ("NIR", nir), ("SWIR1", swir1), ("Green", green)]:
             valid_data = band[~np.isnan(band)]
@@ -196,17 +194,26 @@ class DataPreprocessor:
             (swir1 - nir) / (swir1 + nir + epsilon),
             np.nan
         )
+        
+        # SAVI = ((NIR - Red) / (NIR + Red + L)) * (1 + L), where L is a soil brightness correction factor
+        L = 0.5  
+        savi = np.where(
+            ~np.isnan(nir + red),
+            ((nir - red) / (nir + red + L + epsilon)) * (1 + L),
+            np.nan
+        )
 
         ndvi = np.clip(ndvi, -1, 1)
         mndwi = np.clip(mndwi, -1, 1)
         ndbi = np.clip(ndbi, -1, 1)
+        savi = np.clip(savi, -1, 1)
         
         print(f"\n{sensor_name} Index Statistics:")
-        for name, index in [("NDVI", ndvi), ("MNDWI", mndwi), ("NDBI", ndbi)]:
+        for name, index in [("NDVI", ndvi), ("MNDWI", mndwi), ("NDBI", ndbi), ("SAVI", savi)]:
             valid_data = index[~np.isnan(index)]
             print(f"{name}: min={np.min(valid_data):.4f}, max={np.max(valid_data):.4f}, mean={np.mean(valid_data):.4f}")
         
-        indices = {'ndvi': ndvi, 'mndwi': mndwi, 'ndbi': ndbi}
+        indices = {'ndvi': ndvi, 'mndwi': mndwi, 'ndbi': ndbi, 'savi': savi}
         for index_name, index_array in indices.items():
             output_path = self.output_dir / f"{sensor_name}_{index_name}.tif"
             
@@ -219,18 +226,17 @@ class DataPreprocessor:
                 "dtype": 'float32',
                 "nodata": -9999
             })
-            
-            # 将nan值替换为nodata值
+
             index_array[np.isnan(index_array)] = -9999
             
             with rasterio.open(output_path, 'w', **meta) as dst:
                 dst.write(index_array.astype('float32'), 1)
 
 if __name__ == "__main__":
-    data_dir = "/Users/geo/Desktop/My_custom_project/LST_downscaling/data"
+    data_dir = ""
     shp_path = os.path.join(data_dir, "SHP", "boundary1.shp")
-    landsat_dir = os.path.join(data_dir, "LC09_L2SP_143027_20240919_20240923_02_T1")
-    sentinel_dir = os.path.join(data_dir, "S2B_MSIL2A_20240919T050649_N0511_R019_T45TWN_20240919T073834.SAFE")
+    landsat_dir = os.path.join(data_dir, "Landsat")
+    sentinel_dir = os.path.join(data_dir, "S2")
     
     preprocessor = DataPreprocessor(data_dir)
     
