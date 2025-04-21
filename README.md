@@ -98,8 +98,8 @@ LST_downscaling/
 
 - Ensure the input data paths in the scripts match your directory structure.
 - The scripts assume Landsat and Sentinel-2 data are from the same date or close temporal proximity for consistency.
-- Random Forest model parameters (e.g., `n_estimators=50`, `max_depth=15`) can be tuned for better performance.
-- The visualization uses custom colormaps tailored for NDVI, MNDWI, NDBI, and LST; adjust as needed.
+- Random Forest model and XGBoost model parameters can be tuned for better performance.
+- The visualization uses custom colormaps tailored for NDVI, MNDWI, NDBI, SAVI and LST; adjust as needed.
 
 ## Contact
 
